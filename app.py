@@ -4,7 +4,7 @@ import joblib
 app = Flask(__name__)
 
 # Load trained ML model
-model = joblib.load("Calories_model.pkl")
+model = joblib.load("calories_model.pkl")
 
 
 @app.route("/")
