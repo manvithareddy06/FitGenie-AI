@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitGenie AI</title>
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-white font-sans ">
+    <div class=""max-w-6xl mx-auto px-4 py-8>
+    <section class="text-center py-12">
+
+    <h1 class="text-5xl font-bold text-emerald-400">
+        🤖 FitGenie AI
+    </h1>
+
+    <p class="text-xl text-slate-300 mt-4">
+        Personalized Calories Prediction using Machine Learning
+    </p>
+
+    <p class="text-slate-400 mt-3">
+        Predict your calories burned instantly based on your fitness profile.
+    </p>
+
+</section>
+
+    <div class="bg-slate-800 p-8 rounded-2xl shadow-xl w-full max-w-md border border-slate-700 mx-auto">
+        <h1 class="text-2xl font-bold text-center text-emerald-400 mb-6 tracking-wide">✨ FitGenie AI – Calories Predictor</h1>
+        
+        <form id="predictionForm" class="space-y-4">
+            <!-- Gender Dropdown (User sees text, backend gets 0 or 1) -->
+            <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1">Gender</label>
+                <select name="gender" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 focus:outline-none focus:border-emerald-400 text-white">
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
+            </div>
+
+            <!-- Age Input -->
+            <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1">Age (Years)</label>
+                <input type="number" name="age" min="1" max="100" value="21" required class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 focus:outline-none focus:border-emerald-400 text-white">
+            </div>
+
+            <!-- Height & Weight Grid -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Height (cm)</label>
+                    <input type="number" name="height" min="100" max="250" value="150" required class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 focus:outline-none focus:border-emerald-400 text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Weight (kg)</label>
+                    <input type="number" name="weight" min="30" max="200" value="55" required class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 focus:outline-none focus:border-emerald-400 text-white">
+                </div>
+            </div>
+
+            <!-- Duration & Heart Rate Grid -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Duration (mins)</label>
+                    <input type="number" name="duration" min="1" max="180" value="45" required class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 focus:outline-none focus:border-emerald-400 text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Heart Rate (BPM)</label>
+                    <input type="number" name="heart_rate" min="40" max="220" value="100" required class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 focus:outline-none focus:border-emerald-400 text-white">
+                </div>
+            </div>
+
+            <!-- Body Temperature Slider (Keeps it within realistic human ranges) -->
+            <div>
+                <div class="flex justify-between text-sm font-medium text-slate-300 mb-1">
+                    <label>Body Temp (°C)</label>
+                    <span id="tempValue" class="text-emerald-400 font-bold">37.0°C</span>
+                </div>
+                <input type="range" name="body_temp" min="35.0" max="42.0" step="0.1" value="37.0" id="tempSlider" class="w-full accent-emerald-400">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 font-bold p-3 rounded-lg mt-2 transition-all cursor-pointer shadow-lg shadow-emerald-950/50">
+                Predict Calories Burned
+            </button>
+        </form>
+
+        <div id="resultCard" class="hidden mt-6 bg-slate-900 border border-emerald-500/30 p-4 rounded-xl text-center">
+
+    <p class="text-sm text-slate-400 uppercase tracking-widest">
+        Estimated Burn
+    </p>
+
+    <h2 class="text-3xl font-black text-emerald-400 mt-1">
+        <span id="calorieResult">0</span> kcal
+    </h2>
+
+    <div class="mt-4 text-left text-slate-300 space-y-2">
+        <p>⏱ Duration: <span id="showDuration"></span> minutes</p>
+        <p>❤️ Heart Rate: <span id="showHeartRate"></span> BPM</p>
+    </div>
+
+    <p id="fitnessTip" class="mt-4 text-emerald-300 font-medium"></p>
+
+</div>
+    <section class="mt-16 bg-slate-800 rounded-2xl p-8 shadow-lg">
+
+    <h2 class="text-3xl font-bold text-emerald-400 text-center mb-6">
+        About FitGenie AI
+    </h2>
+
+    <p class="text-slate-300 text-center leading-8">
+
+        FitGenie AI is a Machine Learning powered web application that
+        predicts calories burned during exercise using personal and workout
+        information.
+
+        It helps users estimate their calorie burn quickly and easily using
+        an AI model trained on real fitness data.
+
+    </p>
+
+</section>
+<section class="mt-16">
+
+    <h2 class="text-3xl font-bold text-center text-emerald-400 mb-8">
+        How It Works
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+        <div class="bg-slate-800 p-6 rounded-xl text-center shadow-lg">
+            <div class="text-5xl mb-4">📝</div>
+            <h3 class="text-xl font-bold mb-2">Step 1</h3>
+            <p class="text-slate-300">
+                Enter your fitness details such as age, height, weight and workout information.
+            </p>
+        </div>
+
+        <div class="bg-slate-800 p-6 rounded-xl text-center shadow-lg">
+            <div class="text-5xl mb-4">🤖</div>
+            <h3 class="text-xl font-bold mb-2">Step 2</h3>
+            <p class="text-slate-300">
+                Our Machine Learning model analyzes your data and predicts calories burned.
+            </p>
+        </div>
+
+        <div class="bg-slate-800 p-6 rounded-xl text-center shadow-lg">
+            <div class="text-5xl mb-4">🔥</div>
+            <h3 class="text-xl font-bold mb-2">Step 3</h3>
+            <p class="text-slate-300">
+                View your estimated calories burned and use the result to track your fitness.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+    <!-- JavaScript to handle slider updates and non-reloading API calls -->
+    <script>
+        // Update temp text when moving slider
+        const slider = document.getElementById('tempSlider');
+        const tempValue = document.getElementById('tempValue');
+        slider.addEventListener('input', (e) => {
+            tempValue.textContent = `${parseFloat(e.target.value).toFixed(1)}°C`;
+        });
+
+        // Intercept form submission to use asynchronous Fetch API
+        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            
+            try {
+                // Change '/predict' if your Flask route is named differently
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+               const calories = Math.round(data.prediction);
+
+document.getElementById('calorieResult').textContent = calories;
+
+document.getElementById('showDuration').textContent =
+    formData.get("duration");
+
+document.getElementById('showHeartRate').textContent =
+    formData.get("heart_rate");
+
+
+if (calories < 200) {
+    document.getElementById('fitnessTip').textContent =
+        "💡 Try increasing your workout duration.";
+}
+else if (calories < 500) {
+    document.getElementById('fitnessTip').textContent =
+        "💪 Good workout! Keep maintaining consistency.";
+}
+else {
+    document.getElementById('fitnessTip').textContent =
+        "🔥 Excellent workout intensity!";
+}
+
+document.getElementById('resultCard').classList.remove('hidden');
+            } catch (error) {
+                alert('Error fetching prediction. Is your backend running?');
+            }
+        });
+    </script>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
